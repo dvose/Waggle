@@ -167,6 +167,5 @@ C:\Users\Dustin\projects\school\Waggle\Waggle\bin\ko\System.Spatial.resources.dl
 C:\Users\Dustin\projects\school\Waggle\Waggle\bin\ru\System.Spatial.resources.dll
 C:\Users\Dustin\projects\school\Waggle\Waggle\bin\zh-Hans\System.Spatial.resources.dll
 C:\Users\Dustin\projects\school\Waggle\Waggle\bin\zh-Hant\System.Spatial.resources.dll
-C:\Users\Dustin\projects\school\Waggle\Waggle\obj\Debug\Waggle.csprojResolveAssemblyReference.cache
 C:\Users\Dustin\projects\school\Waggle\Waggle\obj\Debug\Waggle.dll
 C:\Users\Dustin\projects\school\Waggle\Waggle\obj\Debug\Waggle.pdb

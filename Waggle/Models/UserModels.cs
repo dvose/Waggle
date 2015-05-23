@@ -25,7 +25,8 @@ namespace Waggle.Models
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string Email { get; set; }
+        public String Email { get; set; }
+        private Boolean IsSuspended { get; set; }
     }
 
     [Table("User_Profile")]
@@ -35,7 +36,7 @@ namespace Waggle.Models
         [ForeignKey("User")]
         public int User_Id {get; set;}
         public User User {get; set;}
-        public string Name { get; set; }
+        public String Name { get; set; }
         public String Description { get; set; }
     }
     public class RegisterExternalLoginModel

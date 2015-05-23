@@ -11,6 +11,7 @@ using WebMatrix.WebData;
 using Waggle.Models;
 using Waggle.Filters;
 using Waggle.ViewModels;
+using System.IO;
 
 namespace Waggle.Controllers
 {
@@ -96,7 +97,12 @@ namespace Waggle.Controllers
                         up.User = newUser;
                         db.UserProfiles.Add(up);
                         db.SaveChanges();
+
+                        //create user upload directory
+                        var strPath = Server.MapPath("~/Uploads/" + newUser.Id);
+                        Directory.CreateDirectory(strPath);
                     }
+                
                     WebSecurity.Login(model.Email, model.Password);
                     return RedirectToAction("Index", "Home");
                 }
@@ -122,6 +128,17 @@ namespace Waggle.Controllers
             }
             if (model.user != null && model.userprofile != null)
             {
+                using (FileEntitiesContext dbFiles = new FileEntitiesContext())
+                {
+                    model.files = new List<Waggle.Models.File>();
+                    var query = from f in dbFiles.Files
+                                where f.User_Id == model.user.Id
+                                select f;
+                    foreach (var file in query)
+                    {
+                        model.files.Add(file);
+                    }
+                }
                 return View(model);
             }
             else {
@@ -186,7 +203,7 @@ namespace Waggle.Controllers
             switch (createStatus)
             {
                 case MembershipCreateStatus.DuplicateUserName:
-                    return "User name already exists. Please enter a different user name.";
+                    return "Email address already exists. Please enter a different email address.";
 
                 case MembershipCreateStatus.DuplicateEmail:
                     return "A user name for that e-mail address already exists. Please enter a different e-mail address.";

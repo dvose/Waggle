@@ -12,6 +12,7 @@ namespace Waggle.ViewModels{
     {
         public User user { get; set; }
         public UserProfile userprofile { get; set; }
+        public List<File> files;
         public bool isCurrentUser { get; set; }
     }
 }

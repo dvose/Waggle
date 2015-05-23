@@ -19,3 +19,22 @@ else {
 <br/>
 <br/>
 @Html.LabelFor(m => m.userprofile.Description) @Model.userprofile.Description
+
+@if (Model.isCurrentUser) {
+    <h2>Upload a File</h2>
+    using (Html.BeginForm("Upload", "File", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    { <input type="file" name="uploadFile" />
+      <input type="submit" id="btnSubmit" value="Upload" />
+    }
+}
+
+@if (Model.files != null) { 
+    <h2>Uploaded Files</h2>
+    foreach (var file in Model.files) {
+        @Html.ActionLink(file.fileName, "Download", "File", new {Id=file.Id}, null);
+        if (Model.isCurrentUser) { 
+           @Html.ActionLink("Delete", "Delete", "File", new { Id = file.Id }, null);                                                                        
+        }
+        <br/>
+    }
+}
