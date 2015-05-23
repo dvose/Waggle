@@ -1,0 +1,21 @@
+﻿@model Waggle.ViewModels.UserShowModel
+
+@{
+    ViewBag.Title = "Profile";
+}
+
+@if (Model.isCurrentUser) {
+    <h2 style="display:inline;">My Profile</h2> @Html.ActionLink("Edit", "Edit", "User", new{id=Model.user.Id}, null)
+    <br/>
+    <br/>
+}
+else {
+    <h2>Profile Page</h2>
+    <br/>
+}
+@Html.LabelFor(m => m.userprofile.Name, new {style="display:inline;"}): @Model.userprofile.Name
+<br/>
+@Html.LabelFor(m => m.user.Email, new {style="display:inline;"}): @Model.user.Email
+<br/>
+<br/>
+@Html.LabelFor(m => m.userprofile.Description) @Model.userprofile.Description

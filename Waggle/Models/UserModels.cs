@@ -26,10 +26,6 @@ namespace Waggle.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Email { get; set; }
-        [Column("First_Name")]
-        public string FirstName { get; set; }
-        [Column("Last_Name")]
-        public string LastName { get; set; }
     }
 
     [Table("User_Profile")]
@@ -39,6 +35,7 @@ namespace Waggle.Models
         [ForeignKey("User")]
         public int User_Id {get; set;}
         public User User {get; set;}
+        public string Name { get; set; }
         public String Description { get; set; }
     }
     public class RegisterExternalLoginModel
@@ -90,15 +87,7 @@ namespace Waggle.Models
         [RegularExpression("[A-z0-9]+@spsu.edu", ErrorMessage = "Must be an spsu email")]
         [Display(Name = "Email")]
         public string Email { get; set; }
-        
-        [Required]
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; }
 
-        [Required]
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
-        
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]

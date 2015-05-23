@@ -10,6 +10,7 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using Waggle.Models;
 using Waggle.Filters;
+using Waggle.ViewModels;
 
 namespace Waggle.Controllers
 {
@@ -79,9 +80,8 @@ namespace Waggle.Controllers
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.Email, model.Password, propertyValues: new{
-                                                                                                         First_Name = model.Email,
-                                                                                                         Last_Name = model.LastName}
+                    WebSecurity.CreateUserAndAccount(model.Email, model.Password, propertyValues: new { }
+
                     );
                     Roles.AddUserToRole(model.Email, "normal");
                     
@@ -108,6 +108,75 @@ namespace Waggle.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        //
+        // GET: /User/Show/{Id}
+        [AllowAnonymous]
+        public ActionResult Show(int id) {
+            UserShowModel model = new UserShowModel();
+            model.isCurrentUser = (WebSecurity.CurrentUserId == id);
+            using (UserEntitiesContext db = new UserEntitiesContext()) {
+                model.user = db.Users.Find(id);
+                model.userprofile = db.UserProfiles.Find(id);
+            }
+            if (model.user != null && model.userprofile != null)
+            {
+                return View(model);
+            }
+            else {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        // GET: /User/Manage/
+        public ActionResult Manage()
+        {
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("Show", new { id = WebSecurity.CurrentUserId });
+            }
+            else { 
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        // GET: /User/Edit/
+        public ActionResult Edit(int id)
+        {
+            if (Request.IsAuthenticated && WebSecurity.CurrentUserId == id)
+            {
+                using (UserEntitiesContext db = new UserEntitiesContext()) {
+                    UserProfile up = db.UserProfiles.Find(id);
+                    return View(up);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        // POST: /User/Edit/
+        [HttpPost]
+        public ActionResult Edit(UserProfile up)
+        {
+            if (Request.IsAuthenticated)
+            {
+                using (UserEntitiesContext db = new UserEntitiesContext())
+                {
+                    UserProfile upDb = db.UserProfiles.Find(WebSecurity.CurrentUserId);
+                    upDb.Name = up.Name;
+                    upDb.Description = up.Description;
+
+                    db.SaveChanges();
+                    return RedirectToAction("Manage", "User");
+                }
+            }
+            else
+            {
+                return View();
+            }
         }
 
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
