@@ -26,7 +26,10 @@ namespace Waggle.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public String Email { get; set; }
-        private Boolean IsSuspended { get; set; }
+        public Boolean IsSuspended { get; set; }
+
+        [Column("Avatar_Path")]
+        public String AvatarPath { get; set; }
     }
 
     [Table("User_Profile")]

@@ -36,5 +36,8 @@ namespace Waggle.Models
 
         [Column("File_Type")]
         public String fileType { get; set; }
+
+        [Column("File_Display_Name")]
+        public String fileDisplayName { get; set; }
     }
 }

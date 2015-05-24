@@ -327,6 +327,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\UserAvatars\" />
     <Folder Include="Uploads\" />
   </ItemGroup>
   <PropertyGroup>

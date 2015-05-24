@@ -3,22 +3,30 @@
     ViewBag.Title = "Edit";
 }
 <h2>Edit Profile</h2>
-@using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
 
     <fieldset>
         <legend>Edit Profile</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.Name)
-                @Html.TextBoxFor(m => m.Name)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Description)
-                @Html.TextAreaFor(m => m.Description)
-            </li>
-        </ol>
-        <input type="submit" value="Save Changes" />
+        <img src=@Model.User.AvatarPath height="150" width="150" />
+        <br/> 
+        <h2>Upload a Profile Picture</h2>
+        @using (Html.BeginForm("Avatar", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            { <input type="file" name="uploadAvatar" />
+                <input type="submit" id="btnSubmit" value="Upload" />
+             }
+        @Html.ActionLink("Remove Profile Picture", "AvatarDelete", "User", new { Id = Model.User.Id }, null)   
+        @using (Html.BeginForm("Edit", "User")) {
+            <ol>
+                <li>
+                    @Html.LabelFor(m => m.Name)
+                    @Html.TextBoxFor(m => m.Name)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.Description)
+                    @Html.TextAreaFor(m => m.Description)
+                </li>
+             </ol>
+            <input type="submit" value="Save Changes" />
+        }
     </fieldset>
-}

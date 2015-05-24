@@ -12,6 +12,7 @@ using Waggle.Models;
 using Waggle.Filters;
 using Waggle.ViewModels;
 using System.IO;
+using System.Linq;
 
 namespace Waggle.Controllers
 {
@@ -92,6 +93,7 @@ namespace Waggle.Controllers
                                     where a.Email.Contains(model.Email)
                                     select a;
                         User newUser = query.FirstOrDefault();
+                        newUser.AvatarPath = "/Content/UserAvatars/default.png";
                         UserProfile up = new UserProfile();
                         up.User_Id = newUser.Id;
                         up.User = newUser;
@@ -165,6 +167,7 @@ namespace Waggle.Controllers
             {
                 using (UserEntitiesContext db = new UserEntitiesContext()) {
                     UserProfile up = db.UserProfiles.Find(id);
+                    up.User = db.Users.Find(id);
                     return View(up);
                 }
             }
@@ -196,6 +199,54 @@ namespace Waggle.Controllers
             }
         }
 
+        //POST: /User/Avatar
+        [Authorize]
+        [HttpPost]
+        public ActionResult Avatar(HttpPostedFileBase uploadAvatar) {
+            if (uploadAvatar == null || uploadAvatar.ContentLength == 0)
+            {
+                ViewBag.uploadMessage = "Select a file to upload";
+                return View("Edit", "User", new {Id=WebSecurity.CurrentUserId});
+            }
+            if (ModelState.IsValid)
+            {
+                string[] picturesExtensions = { ".png", ".gif", ".jpeg", ".jpg"};
+                string extension = Path.GetExtension(uploadAvatar.FileName);
+                if (!picturesExtensions.Contains(extension))
+                {
+                    ViewBag.uploadMessage = "Please upload an image";
+                    return View("Edit", "User", new { Id = WebSecurity.CurrentUserId });
+                }
+                string strPath = "~\\Content\\UserAvatars\\";
+                var avatarFileName = WebSecurity.CurrentUserId + extension;
+                var path = Path.Combine(Server.MapPath(strPath), avatarFileName);
+                uploadAvatar.SaveAs(path);
+                using (UserEntitiesContext db = new UserEntitiesContext()) {
+                    User currentUser = db.Users.Find(WebSecurity.CurrentUserId);
+                    currentUser.AvatarPath = "/Content/UserAvatars/" + avatarFileName;
+                    db.SaveChanges();
+                }
+            }
+            return RedirectToAction("Edit", "User", new { Id = WebSecurity.CurrentUserId });
+        }
+
+        [Authorize]
+        public ActionResult AvatarDelete(int Id)
+        {
+            if (WebSecurity.CurrentUserId == Id)
+            {
+                string oldAvatarPath;
+                using (UserEntitiesContext db = new UserEntitiesContext())
+                {
+                   User user = db.Users.Find(Id);
+                   oldAvatarPath = user.AvatarPath;
+                   user.AvatarPath = "/Content/UserAvatars/default.png";
+                   db.SaveChanges();
+                }
+                System.IO.File.Delete(Server.MapPath("~/"+oldAvatarPath));
+            }
+            return RedirectToAction("Edit", "User", new { Id = WebSecurity.CurrentUserId });
+        }
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
         {
             // See http://go.microsoft.com/fwlink/?LinkID=177550 for
@@ -221,7 +272,7 @@ namespace Waggle.Controllers
                     return "The password retrieval question provided is invalid. Please check the value and try again.";
 
                 case MembershipCreateStatus.InvalidUserName:
-                    return "The user name provided is invalid. Please check the value and try again.";
+                    return "The email provided is invalid. Please check the value and try again.";
 
                 case MembershipCreateStatus.ProviderError:
                     return "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";

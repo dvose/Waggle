@@ -169,3 +169,4 @@ C:\Users\Dustin\projects\school\Waggle\Waggle\bin\zh-Hans\System.Spatial.resourc
 C:\Users\Dustin\projects\school\Waggle\Waggle\bin\zh-Hant\System.Spatial.resources.dll
 C:\Users\Dustin\projects\school\Waggle\Waggle\obj\Debug\Waggle.dll
 C:\Users\Dustin\projects\school\Waggle\Waggle\obj\Debug\Waggle.pdb
+C:\Users\Dustin\projects\school\Waggle\Waggle\obj\Debug\Waggle.csprojResolveAssemblyReference.cache

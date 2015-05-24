@@ -13,6 +13,10 @@ else {
     <h2>Profile Page</h2>
     <br/>
 }
+
+<img src=@Model.user.AvatarPath alt="avatar" height="150" width="150">
+<br/>
+
 @Html.LabelFor(m => m.userprofile.Name, new {style="display:inline;"}): @Model.userprofile.Name
 <br/>
 @Html.LabelFor(m => m.user.Email, new {style="display:inline;"}): @Model.user.Email
@@ -31,7 +35,7 @@ else {
 @if (Model.files != null) { 
     <h2>Uploaded Files</h2>
     foreach (var file in Model.files) {
-        @Html.ActionLink(file.fileName, "Download", "File", new {Id=file.Id}, null);
+        @Html.ActionLink(file.fileDisplayName, "Download", "File", new {Id=file.Id}, null);
         if (Model.isCurrentUser) { 
            @Html.ActionLink("Delete", "Delete", "File", new { Id = file.Id }, null);                                                                        
         }

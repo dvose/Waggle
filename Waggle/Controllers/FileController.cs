@@ -36,9 +36,21 @@ namespace Waggle.Controllers
             if (ModelState.IsValid)
             {
                 var fileName = Path.GetFileName(uploadFile.FileName);
+                var fileDisplayName = fileName;
                 string extension = Path.GetExtension(uploadFile.FileName);
                 string strPath = "~\\Uploads\\" + WebSecurity.CurrentUserId;
                 var path = Path.Combine(Server.MapPath(strPath), fileName);
+
+                //handles duplicate file names
+                if (System.IO.File.Exists(path)) { 
+                    int i = 1;
+                    var originalName = fileName;
+                    while (System.IO.File.Exists(path)) {
+                        fileName = i + originalName;
+                        path = Path.Combine(Server.MapPath(strPath), fileName);
+                        i++;
+                    }
+                }
                 uploadFile.SaveAs(path);
                 ModelState.Clear();
 
@@ -47,6 +59,7 @@ namespace Waggle.Controllers
                 {
                     Waggle.Models.File newFile = new Waggle.Models.File();
                     newFile.fileName = fileName;
+                    newFile.fileDisplayName = fileDisplayName;
                     newFile.filePath = path;
                     newFile.fileType = extension;
                     newFile.User_Id = WebSecurity.CurrentUserId;
