@@ -13,4 +13,4 @@
 - [ ] Forums
 - [ ] Topics
 - [ ] Posts
-- [ ] User Avatars
+- [x] User Avatars
