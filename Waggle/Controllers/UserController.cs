@@ -82,7 +82,7 @@ namespace Waggle.Controllers
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.Email, model.Password, propertyValues: new { }
+                    WebSecurity.CreateUserAndAccount(model.Email, model.Password, propertyValues: new { Name= model.Name}
 
                     );
                     Roles.AddUserToRole(model.Email, "normal");
@@ -186,7 +186,6 @@ namespace Waggle.Controllers
                 using (UserEntitiesContext db = new UserEntitiesContext())
                 {
                     UserProfile upDb = db.UserProfiles.Find(WebSecurity.CurrentUserId);
-                    upDb.Name = up.Name;
                     upDb.Description = up.Description;
 
                     db.SaveChanges();

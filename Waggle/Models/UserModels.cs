@@ -27,7 +27,7 @@ namespace Waggle.Models
         public int Id { get; set; }
         public String Email { get; set; }
         public Boolean IsSuspended { get; set; }
-
+        public String Name { get; set; }
         [Column("Avatar_Path")]
         public String AvatarPath { get; set; }
     }
@@ -39,7 +39,8 @@ namespace Waggle.Models
         [ForeignKey("User")]
         public int User_Id {get; set;}
         public User User {get; set;}
-        public String Name { get; set; }
+
+        [Display(Name = "About Me")]
         public String Description { get; set; }
     }
     public class RegisterExternalLoginModel
@@ -91,6 +92,10 @@ namespace Waggle.Models
         [RegularExpression("[A-z0-9]+@spsu.edu", ErrorMessage = "Must be an spsu email")]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]

@@ -19,10 +19,6 @@
         @using (Html.BeginForm("Edit", "User")) {
             <ol>
                 <li>
-                    @Html.LabelFor(m => m.Name)
-                    @Html.TextBoxFor(m => m.Name)
-                </li>
-                <li>
                     @Html.LabelFor(m => m.Description)
                     @Html.TextAreaFor(m => m.Description)
                 </li>
