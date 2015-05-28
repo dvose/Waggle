@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Waggle.Models.User>
+
+@{
+    ViewBag.Title = "UserList";
+}
+
+<h2>User List</h2>
+<br />
+@foreach (var item in Model)
+{
+    <body>User Name: @item.Name &nbsp; User Email: @item.Email &nbsp; User Suspension: @item.IsSuspended &nbsp; User Admin: [coming soon] <br /></body>
+}
