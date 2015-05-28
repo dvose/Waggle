@@ -1,0 +1,18 @@
+﻿@model Waggle.ViewModels.PostList
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@* Probably need to create a ViewModel with Forum + Topic info so forum name can easily be accessed here *@
+<h2>@Html.ActionLink("Home", "Index", "Forum") > @Model.ForumName</h2>
+<h3>@Html.ActionLink("Create Topic", "PLACEHOLDER", "PLACEHOLDER")</h3><br /><br />
+@if (Model.Topics.Count <= 0)
+{
+    <h3>There are no topics!</h3>
+}
+@foreach (Waggle.Models.Topic t in Model.Topics)
+{
+   @Html.ActionLink(t.Name, "Index", "Post", new { TopicId = t.TopicId }, null) <br /><br />
+}
+

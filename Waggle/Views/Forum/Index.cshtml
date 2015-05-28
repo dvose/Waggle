@@ -1,0 +1,13 @@
+﻿@model List<Waggle.Models.Forum>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Forum List</h2>
+@foreach (Waggle.Models.Forum f in Model) { 
+    if (!f.IsDeleted) {         
+        <h3>@Html.ActionLink(f.Name, "Index", "Topic", new { ForumId = f.ForumId }, null)</h3>
+        <br />@f.Description;
+    }
+}
