@@ -6,7 +6,15 @@
 
 <h2>User List</h2>
 <br />
-@foreach (var item in Model)
+@foreach (var user in Model)
 {
-    <body>User Name: @item.Name &nbsp; User Email: @item.Email &nbsp; User Suspension: @item.IsSuspended &nbsp; User Admin: [coming soon] <br /></body>
+    <body><h2><img src=@user.AvatarPath height="50" width="50"/> @Html.ActionLink(@user.Name, "Show", "User", routeValues: new {Id=@user.Id}, htmlAttributes: null)</h2><br/>Email: @user.Email
+    <br/>User Suspension: @Html.CheckBoxFor(x => user.IsSuspended)
+    <br/>User Admin:  
+    @if (Roles.IsUserInRole(@user.Email, "admin")) { 
+        <text>Admin</text>
+    } 
+    else{
+        <text>Not Admin</text>
+    }<br /></body>
 }

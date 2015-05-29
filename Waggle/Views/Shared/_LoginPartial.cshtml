@@ -1,5 +1,9 @@
 ﻿@if (Request.IsAuthenticated) {
     <text>
+        @if (Roles.IsUserInRole("admin"))
+        {
+          @Html.ActionLink("Admin Panel", "Index", "Admin", routeValues: null, htmlAttributes: null)
+        }
          @Html.ActionLink("My Profile", "Manage", "User", routeValues: null, htmlAttributes: null)
         @using (Html.BeginForm("LogOff", "User", FormMethod.Post, new { id = "logoutForm" })) {
             @Html.AntiForgeryToken()

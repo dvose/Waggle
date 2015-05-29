@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Waggle.Filters;
 using Waggle.Models;
 using Waggle.ViewModels;
 using WebMatrix.WebData;
@@ -15,10 +16,16 @@ namespace Waggle.Controllers
         // GET: /Admin/
 
         [Authorize]
+        [InitializeSimpleMembershipAttribute]
         public ActionResult Index()
         {
-
-            return View();
+            if (User.IsInRole("admin"))
+            {
+                return View();
+            }
+            else {
+                return RedirectToAction("Http404", "Error");
+            }
 
         }
 
@@ -29,28 +36,36 @@ namespace Waggle.Controllers
         [Authorize]
         public ActionResult Index (AdminPanel model)
         {
-            if (ModelState.IsValid)
+            if (User.IsInRole("admin"))
             {
-                //need access to forum database to add the info
-                //ForumEntitiesContext doesn't exist at the moment
-                //workaround using exisiting list view
-                //any forums created using this only exist during the session
-                //when the application is running
+                if (ModelState.IsValid)
+                {
+                    //need access to forum database to add the info
+                    //ForumEntitiesContext doesn't exist at the moment
+                    //workaround using exisiting list view
+                    //any forums created using this only exist during the session
+                    //when the application is running
 
-                Forum newforum = new Forum();
+                    Forum newforum = new Forum();
 
-                newforum.Name = model.forum.Name;
-                newforum.Description = model.forum.Description;
+                    newforum.Name = model.forum.Name;
+                    newforum.Description = model.forum.Description;
 
-                Forum.SetUpForumList();
+                    Forum.SetUpForumList();
 
-                Forum.ForumList.Add(newforum);
+                    Forum.ForumList.Add(newforum);
 
-                return View("../Forum/Index", Forum.ForumList);
+                    return View("../Forum/Index", Forum.ForumList);
 
+                }
+                else
+                    return View("Forbidden");
             }
             else
-            return View("Forbidden");
+            {
+                return RedirectToAction("Http404", "Error");
+            }
+          
         }
 
         // GET: UserList
@@ -58,13 +73,19 @@ namespace Waggle.Controllers
         [Authorize]
         public ActionResult UserList()
         {
-            using (UserEntitiesContext db = new UserEntitiesContext())
+               if (User.IsInRole("admin"))
+                {
+                 using (UserEntitiesContext db = new UserEntitiesContext())
+                 {
+                     var users = db.Users.ToList();
+        
+                        return View(users);
+                 }
+                   }
+            else
             {
-                var users = db.Users.ToList();
-
-                return View(users);
+                return RedirectToAction("Http404", "Error");
             }
-
             
         }
 
