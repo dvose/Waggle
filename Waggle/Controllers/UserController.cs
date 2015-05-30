@@ -26,6 +26,9 @@ namespace Waggle.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (WebSecurity.IsAuthenticated) {
+                return RedirectToAction("Index","Forum");
+            }
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -40,7 +43,7 @@ namespace Waggle.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.Email, model.Password, persistCookie: model.RememberMe))
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Forum");
             }
 
             // If we got this far, something failed, redisplay form
@@ -57,7 +60,7 @@ namespace Waggle.Controllers
         {
             WebSecurity.Logout();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "User");
         }
 
         //

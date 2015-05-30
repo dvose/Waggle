@@ -36,7 +36,7 @@ else {
     <h2>Uploaded Files</h2>
     foreach (var file in Model.files) {
         @Html.ActionLink(file.fileDisplayName, "Download", "File", new {Id=file.Id}, null);
-        if (Model.isCurrentUser) { 
+        if (Model.isCurrentUser || Roles.IsUserInRole("admin")) { 
            @Html.ActionLink("Delete", "Delete", "File", new { Id = file.Id }, null);                                                                        
         }
         <br/>

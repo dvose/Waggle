@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
+using System.Web.Security;
 using Waggle.Models;
 using WebMatrix.WebData;
 
@@ -100,11 +101,15 @@ namespace Waggle.Controllers
             using (FileEntitiesContext db = new FileEntitiesContext())
             {
                 file = db.Files.Find(Id);
-                if (file.User_Id != WebSecurity.CurrentUserId || file == null) {
+                if ((file.User_Id == WebSecurity.CurrentUserId || Roles.IsUserInRole("admin")) && file != null)
+                {
+                    db.Files.Remove(file);
+                    db.SaveChanges();
+                }
+                else
+                {
                     return Redirect(ControllerContext.HttpContext.Request.UrlReferrer.ToString());
                 }
-                db.Files.Remove(file);
-                db.SaveChanges();
             }
             System.IO.File.Delete(file.filePath);
             return Redirect(ControllerContext.HttpContext.Request.UrlReferrer.ToString());
