@@ -32,6 +32,7 @@ namespace Waggle.Models
         public String AvatarPath { get; set; }
     }
 
+
     [Table("User_Profile")]
     public class UserProfile
     {
@@ -89,7 +90,7 @@ namespace Waggle.Models
     public class RegisterModel
     {
         [Required]
-        [RegularExpression("[A-z0-9]+@spsu.edu", ErrorMessage = "Must be an spsu email")]
+       // [RegularExpression("[A-z0-9]+@spsu.edu", ErrorMessage = "Must be an spsu email")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 

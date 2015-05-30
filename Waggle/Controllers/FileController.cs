@@ -55,14 +55,21 @@ namespace Waggle.Controllers
                 ModelState.Clear();
 
                 //save file information
+
+                //define context
                 using (FileEntitiesContext db = new FileEntitiesContext())
                 {
+                    //create new model
                     Waggle.Models.File newFile = new Waggle.Models.File();
+                    
+                    //give model it's attributes - populating columns
                     newFile.fileName = fileName;
                     newFile.fileDisplayName = fileDisplayName;
                     newFile.filePath = path;
                     newFile.fileType = extension;
                     newFile.User_Id = WebSecurity.CurrentUserId;
+                    
+                    //save row
                     db.Files.Add(newFile);
                     db.SaveChanges();
                 }
