@@ -12,6 +12,7 @@ namespace Waggle.Controllers
 {
     public class AdminController : Controller
     {
+        //private ForumContext Fdb = new ForumContext();
         //
         // GET: /Admin/
 
@@ -40,22 +41,27 @@ namespace Waggle.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    //need access to forum database to add the info
-                    //ForumEntitiesContext doesn't exist at the moment
-                    //workaround using exisiting list view
-                    //any forums created using this only exist during the session
-                    //when the application is running
+                    
 
-                    Forum newforum = new Forum();
+                    using (ForumContext Fdb = new ForumContext())
+                    {
+                        Forum newforum = new Forum();
 
-                    newforum.Name = model.forum.Name;
-                    newforum.Description = model.forum.Description;
+                        newforum.UserId = WebSecurity.CurrentUserId;
+                        newforum.Name = model.forum.Name;
+                        newforum.Description = model.forum.Description;
+                        Fdb.Forums.Add(newforum);
+                        Fdb.SaveChanges();
+                        return View("Index", "Forum", Fdb.Forums);
+                    }
 
-                    Forum.SetUpForumList();
+                    
+                    
 
-                    Forum.ForumList.Add(newforum);
+                    //Forum.ForumList.Add(newforum);
+                    
 
-                    return View("../Forum/Index", Forum.ForumList);
+                    
 
                 }
                 else

@@ -5,8 +5,14 @@
 }
 
 <h2>@Html.ActionLink("Home", "Index", "Forum") > @Html.ActionLink(Model.ForumName, "Index", "Topic", new { ForumId = @Model.ForumId }, null) > @Model.TopicName</h2>
-<h3>@Html.ActionLink("Create Post", "CreatePost", "Post")</h3><br /><br />
+<h3>@Html.ActionLink("Create Post", "CreatePost", "Post", new { TopicId = Model.TopicId }, null)</h3><br /><br />
 @foreach (Waggle.Models.Post p in Model.Posts)
 {
-    @p.Body <br /><br />
+    @p.Body<br />
+    if (p.User != null)
+    {
+         @p.User.Name <br />
+    }
+    @*@p.PostTime*@
+   <br /><br />
 }

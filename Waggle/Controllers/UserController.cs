@@ -12,7 +12,6 @@ using Waggle.Models;
 using Waggle.Filters;
 using Waggle.ViewModels;
 using System.IO;
-using System.Linq;
 
 namespace Waggle.Controllers
 {

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -10,16 +12,22 @@ namespace Waggle.Models
      * Topics can be created by any user who has access to the forum it is being created in. 
      * The main purpose of a topic is to contain a list of posts. This list cannot be empty; the creating user must create the first post when creating a topic.
      */
+    [Table("Topic")]
     public class Topic
     {
-        public int TopicId;
-        //public User creator;
-        public int ForumId;
+        [Column("Id")]
+        public int TopicId { get; set; }
+        [Column("User_Id")]
+        public int UserId { get; set; }
+        [Column("Forum_Id")]
+        public int ForumId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public bool IsDeleted { get; set; }
 
 
         //Test topics. Actual topics should come from the databse once there is a database
+        /*
         public static List<Topic> TopicList;
         public static void SetUpTopicList()
         {
@@ -33,6 +41,16 @@ namespace Waggle.Models
                 new Topic{TopicId = 4, ForumId = 1, Name = "Math Topic 2"},
                 new Topic{TopicId = 5, ForumId = 1, Name = "Math Topic 3"}
             };
+        }     
+        */
+    }
+    public class TopicContext : DbContext
+    {
+        public TopicContext()
+            : base("WaggleDb")
+        {
         }
+
+        public DbSet<Topic> Topics { get; set; }
     }
 }

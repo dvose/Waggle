@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using WebMatrix.Data;
 
 namespace Waggle
 {
@@ -23,6 +24,11 @@ namespace Waggle
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+
+            System.Data.Entity.Database.SetInitializer<Waggle.Models.TopicContext>(null);
+            System.Data.Entity.Database.SetInitializer<Waggle.Models.PostContext>(null);
+            System.Data.Entity.Database.SetInitializer<Waggle.Models.ForumContext>(null);
+            System.Data.Entity.Database.SetInitializer<Waggle.Models.FileEntitiesContext>(null);
         }
     }
 }
