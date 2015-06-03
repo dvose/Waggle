@@ -3,14 +3,12 @@
 ##Tasks
 - [x] Login
 - [x] File Management
-- [ ] File Repository
+- [x] File Repository
 - [ ] Database
-- [ ] Models
+- [x] Models
 - [ ] Admin Panel
 - [x] User Profile 
-- [ ] Database
-- [ ] Models
-- [ ] Forums
-- [ ] Topics
-- [ ] Posts
+- [x] Forums
+- [x] Topics
+- [x] Posts
 - [x] User Avatars
