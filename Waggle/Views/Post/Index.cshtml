@@ -8,11 +8,14 @@
 <h3>@Html.ActionLink("Create Post", "CreatePost", "Post", new { TopicId = Model.TopicId }, null)</h3><br /><br />
 @foreach (Waggle.Models.Post p in Model.Posts)
 {
-    @p.Body<br />
-    if (p.User != null)
-    {
-         @p.User.Name <br />
-    }
-    @*@p.PostTime*@
-   <br /><br />
+    Waggle.Models.User curUser = Waggle.Models.User.GetUserById(p.UserId);
+    <p style="font-size:11px">
+        <img src=@curUser.AvatarPath width="30" height="30" />
+
+        @curUser.Name at @p.PostTime
+    </p>
+    <p style="font-size:14px">
+        @p.Body
+    </p>
+    <br /><br />
 }

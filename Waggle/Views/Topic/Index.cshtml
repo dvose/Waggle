@@ -24,20 +24,19 @@
         <h2>File Repository</h2>
         <br/>
         <ul>
-            @if (Model.Files != null)
-{
-    foreach (Waggle.Models.File file in Model.Files)
-    {
-        <li>
-            @Html.ActionLink(file.fileDisplayName, "Download", "File", new { Id = file.Id }, null)
-        @if ((ViewData["currentUserId"] != null && (int)ViewData["currentUserId"] == file.User_Id) || Roles.IsUserInRole("admin"))
-        {
-        @Html.ActionLink("Delete", "Delete", "File", new { Id = file.Id }, null);
+        @if (Model.Files != null)
+        {    
+            foreach (Waggle.Models.File file in Model.Files)
+            {
+                <li>
+                    @Html.ActionLink(file.fileDisplayName, "Download", "File", new { Id = file.Id }, null)
+                    @if ((ViewData["currentUserId"] != null && (int)ViewData["currentUserId"] == file.User_Id) || Roles.IsUserInRole("admin"))
+                    {
+                        @Html.ActionLink("Delete", "Delete", "File", new { Id = file.Id }, null);
+                    }
+                </li>
+            }
         }
-       </li>
-
-    }
-}
         </ul>
         <h2>Upload a File</h2>
         @using (Html.BeginForm("Upload", "File", new { forumId = Model.ForumId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
