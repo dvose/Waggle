@@ -1,0 +1,26 @@
+﻿@model Waggle.ViewModels.TopicPost
+
+@{
+    ViewBag.Title = "CreateTopic";
+}
+
+<h2>Create Topic</h2>
+
+@*Post Title: @Html.TextBox("Post Title") <br /><br />*@
+@*Post Body:<br />@Html.EditorFor(model => model.NewPostBody)<br />
+
+    @Html.ActionLink("Create Post", "PostCreated", "Post", new { npb = Model.NewPostBody,  }, null)*@
+
+<form action="/Topic/TopicCreated" method="post">
+    <fieldset>
+        <legend>Registration Form</legend>
+        <ol>
+            <li>
+                Topic Title:<br />
+                <input type="text" id="TopicName" name="TopicName" /><br /><br />
+                <textarea id="PostBody" name="PostBody"></textarea>
+            </li>
+        </ol>
+        <input type="submit" value="Create Topic" />
+    </fieldset>
+</form>

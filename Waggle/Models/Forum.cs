@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -10,16 +13,22 @@ namespace Waggle.Models
      * Forums can be created and deleted by admins and can be public or private (only certain users may see a private forum)
      * The main purpose of a forum is to include a list of user-created Topics, but this list can be empty (such as right after creation)
      */
+    [Table("Forum")]
     public class Forum
     {
-        public int ForumId;
-        //public User creator;
+        [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        [Column("Id")]
+        public int ForumId { get; set; }
+        [Column("User_Id")]
+        public int UserId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool IsDeleted = false;
+        public bool IsDeleted { get; set; }
         //public User Deleter;
 
         //Set some forums up for testing. Forum list will come from Database once there is a database!
+        /*
         public static List<Forum> ForumList;
         public static void SetUpForumList()
         {
@@ -31,6 +40,16 @@ namespace Waggle.Models
                 new Forum{ForumId = 3, Name = "Deleted Forum", Description = "A forum that has been deleted.", IsDeleted = true}
             };
         }
+         */
+    }
+    public class ForumContext : DbContext
+    {
+        public ForumContext()
+            : base("WaggleDb")
+        {
+        }
+
+        public DbSet<Forum> Forums { get; set; }
     }
 
 }
