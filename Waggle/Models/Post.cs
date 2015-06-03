@@ -33,7 +33,7 @@ namespace Waggle.Models
         public bool IsDeleted { get; set; }
         //public User Deleter;
         [Column("Date_Stamp")]
-        public DateTime PostTime;
+        public string PostTime { get; set; }
 
         //temp posts for testing until database is implemented
         //public static List<Post> PostList;

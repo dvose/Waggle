@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Waggle.Models;
 using Waggle.ViewModels;
+using WebMatrix.WebData;
 
 namespace Waggle.Controllers
 {
@@ -76,7 +77,7 @@ namespace Waggle.Controllers
                 }
             }
              */
-            tp = new TopicPost() { TopicForum = forum, NewPostUserId = 31 /*CURRENT USER HERE!*/ };
+            tp = new TopicPost() { TopicForum = forum, NewPostUserId = WebSecurity.CurrentUserId };
             return View(tp);
         }
         public ActionResult TopicCreated(string PostBody, string TopicName)
@@ -98,7 +99,7 @@ namespace Waggle.Controllers
             p.TopicId = t.TopicId;
             p.Body = PostBody;
             p.IsDeleted = false;
-            p.PostTime = DateTime.Now;
+            p.PostTime = DateTime.Now.ToString();
             if (ModelState.IsValid)
             {
                 Pdb.Posts.Add(p);

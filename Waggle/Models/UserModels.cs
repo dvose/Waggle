@@ -30,6 +30,25 @@ namespace Waggle.Models
         public String Name { get; set; }
         [Column("Avatar_Path")]
         public String AvatarPath { get; set; }
+
+        /*
+         * Return the User object represented by the passed id.
+         * Written by Bradley 6/3/15
+         */
+        public static User GetUserById(int id)
+        {
+            using (UserEntitiesContext users = new UserEntitiesContext())
+            {
+                    foreach (User u in users.Users)
+                    {
+                        if(u.Id == id)
+                        {
+                            return u;
+                        }
+                    }
+                    return null;
+             }
+        }
     }
 
 

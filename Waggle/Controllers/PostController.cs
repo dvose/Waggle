@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Waggle.Models;
 using Waggle.ViewModels;
+using WebMatrix.WebData;
 
 namespace Waggle.Controllers
 {
@@ -46,21 +48,6 @@ namespace Waggle.Controllers
                 }
                 list.ForumId = topic.ForumId;
                 List<Post> posts = new List<Post>();
-                //This code is copied from UserControl Show method. I can't get it to work the same way
-                /*
-                using (PostContext dbPosts = new PostContext())
-                {
-                
-                    var query = from p in dbPosts.Posts
-                                where p.TopicId == TopicId
-                                select p;
-                 
-                    foreach (var post in query)
-                    {
-                        posts.Add(post);
-                    }
-                 
-                }*/
                 using (PostContext dbPosts = new PostContext())
                 {
                     foreach (Post p in dbPosts.Posts)
@@ -93,7 +80,7 @@ namespace Waggle.Controllers
                     }
                 }
             }
-            tp = new TopicPost() { PostTopic = topic, NewPostUserId = 31 /*CURRENT USER HERE!*/ };
+            tp = new TopicPost() { PostTopic = topic, NewPostUserId = WebSecurity.CurrentUserId };
             return View(tp);
         }
 
@@ -101,11 +88,13 @@ namespace Waggle.Controllers
         {
             Post p = new Post();
             p.UserId = tp.NewPostUserId;
-            //p.UserId = 31; //TEMP
             p.TopicId = tp.PostTopic.TopicId;
             p.Body = PostBody;
             p.IsDeleted = false;
-            p.PostTime = DateTime.Now;
+           // DateTime d = DateTime.Now;
+           // string time = d.DayOfWeek + " " + d.Month + " " + d.day;
+            p.PostTime = DateTime.Now.ToString();
+            Debug.WriteLine(p.PostTime);
             if(ModelState.IsValid)
             {
                 db.Posts.Add(p);
