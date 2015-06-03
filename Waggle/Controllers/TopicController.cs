@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Waggle.Filters;
 using Waggle.Models;
 using Waggle.ViewModels;
+using WebMatrix.WebData;
 
 namespace Waggle.Controllers
 {
@@ -13,11 +15,14 @@ namespace Waggle.Controllers
         private PostContext Pdb = new PostContext();
         private TopicContext Tdb = new TopicContext();
         public static TopicPost tp { get; set; }
+
+        [InitializeSimpleMembershipAttribute]
         public ActionResult Index(int ForumId)
         {
             //PostList is a View Model that should contain forum/topic info to pass on to the View.
             PostList topics = new PostList();
             List<Topic> topicsList = new List<Topic>();
+            List<Waggle.Models.File> filesList = new List<Waggle.Models.File>();
 
             using (TopicContext dbTopics = new TopicContext())
             {
@@ -25,12 +30,20 @@ namespace Waggle.Controllers
                 {
                     if (t.ForumId == ForumId)
                     {
-                        topicsList.Add(t);
+                       topicsList.Add(t);
                     }
                 }
             }
+            using (FileEntitiesContext dbFiles = new FileEntitiesContext()) {
+               foreach (Waggle.Models.File file in dbFiles.Files) {
+                     if(file.Forum_Id == ForumId){
+                        filesList.Add(file);
+                     }
+               }
+            }
              
             topics.Topics = topicsList;
+            topics.Files = filesList;
             topics.ForumId = ForumId; //The forum whose topics should be displayed
             //topics.ForumName = Forum.ForumList[ForumId].Name;
 
@@ -45,6 +58,7 @@ namespace Waggle.Controllers
                     }
                 }
             }
+            ViewData["currentUserId"] = WebSecurity.CurrentUserId;
             return View(topics);
         }
 

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Waggle.Models;
 
+
 namespace Waggle.Controllers
 {
     public class ForumController : Controller

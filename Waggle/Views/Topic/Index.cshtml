@@ -6,13 +6,48 @@
 
 @* Probably need to create a ViewModel with Forum + Topic info so forum name can easily be accessed here *@
 <h2>@Html.ActionLink("Home", "Index", "Forum") > @Model.ForumName</h2>
-<h3>@Html.ActionLink("Create Topic", "CreateTopic", "Topic", new { ForumId = @Model.ForumId }, null)</h3><br /><br />
-@if (Model.Topics.Count <= 0)
+<div class="container">
+    <div class="row">
+
+    <div class="col-sm-3 col-md-6 col-lg-8">
+        <h3>@Html.ActionLink("Create Topic", "CreateTopic", "Topic", new { ForumId = @Model.ForumId }, null)</h3><br /><br />
+        @if (Model.Topics.Count <= 0)
+        {
+            <h3>There are no topics!</h3>
+        }
+        @foreach (Waggle.Models.Topic t in Model.Topics)
+        {
+            @Html.ActionLink(t.Name, "Index", "Post", new { TopicId = t.TopicId }, null) <br /><br />
+        }
+    </div>
+    <div class="col-sm-9 col-md-6 col-lg-4">
+        <h2>File Repository</h2>
+        <br/>
+        <ul>
+            @if (Model.Files != null)
 {
-    <h3>There are no topics!</h3>
+    foreach (Waggle.Models.File file in Model.Files)
+    {
+        <li>
+            @Html.ActionLink(file.fileDisplayName, "Download", "File", new { Id = file.Id }, null)
+        @if ((ViewData["currentUserId"] != null && (int)ViewData["currentUserId"] == file.User_Id) || Roles.IsUserInRole("admin"))
+        {
+        @Html.ActionLink("Delete", "Delete", "File", new { Id = file.Id }, null);
+        }
+       </li>
+
+    }
 }
-@foreach (Waggle.Models.Topic t in Model.Topics)
-{
-   @Html.ActionLink(t.Name, "Index", "Post", new { TopicId = t.TopicId }, null) <br /><br />
-}
+        </ul>
+        <h2>Upload a File</h2>
+        @using (Html.BeginForm("Upload", "File", new { forumId = Model.ForumId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <input type="file" name="uploadFile" />
+            <input type="submit" id="btnSubmit" value="Upload" />
+        }
+
+    </div>
+</div>
+
+ </div>
 

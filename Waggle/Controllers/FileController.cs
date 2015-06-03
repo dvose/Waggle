@@ -27,7 +27,7 @@ namespace Waggle.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult Upload(HttpPostedFileBase uploadFile)
+        public ActionResult Upload(HttpPostedFileBase uploadFile, int forumId)
         {
             if (uploadFile == null || uploadFile.ContentLength == 0)
             {
@@ -65,6 +65,7 @@ namespace Waggle.Controllers
                     
                     //give model it's attributes - populating columns
                     newFile.fileName = fileName;
+                    newFile.Forum_Id = forumId;
                     newFile.fileDisplayName = fileDisplayName;
                     newFile.filePath = path;
                     newFile.fileType = extension;

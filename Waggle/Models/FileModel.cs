@@ -16,7 +16,7 @@ namespace Waggle.Models
         {
         }
 
-        public DbSet<File> Files { get; set; }
+        public DbSet<Waggle.Models.File> Files { get; set; }
     }
 
     [Table("File")]
@@ -27,6 +27,8 @@ namespace Waggle.Models
         [ForeignKey("User")]
         public int User_Id { get; set; }
         public User User { get; set; }
+
+        public int Forum_Id { get; set; }
 
         [Column("File_Name")]
         public string fileName { get; set; }

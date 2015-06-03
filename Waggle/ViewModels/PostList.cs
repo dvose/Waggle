@@ -19,5 +19,7 @@ namespace Waggle.ViewModels
 
         public List<Post> Posts { get; set; }
         public List<Topic> Topics { get; set; }
+
+        public List<Waggle.Models.File> Files { get; set; }
     }
 }

@@ -24,7 +24,7 @@ else {
 <br/>
 @Html.LabelFor(m => m.userprofile.Description) @Model.userprofile.Description
 
-@if (Model.isCurrentUser) {
+@*@if (Model.isCurrentUser) {
     <h2>Upload a File</h2>
     using (Html.BeginForm("Upload", "File", FormMethod.Post, new { enctype = "multipart/form-data" }))
     { <input type="file" name="uploadFile" />
@@ -41,4 +41,4 @@ else {
         }
         <br/>
     }
-}
+}*@
