@@ -5,9 +5,41 @@
 }
 
 <h2>Forum List</h2>
-@foreach (Waggle.Models.Forum f in Model) { 
-    if (!f.IsDeleted) {         
-        <h3>@Html.ActionLink(f.Name, "Index", "Topic", new { ForumId = f.ForumId }, null)</h3>
-        <br />@f.Description;
+@if (User.IsInRole("admin"))
+{
+    <h3>@Html.ActionLink("Create Forum", "CreateForum", "Forum")</h3><br /><br />
+}
+
+
+@foreach (Waggle.Models.Forum f in Model)
+{
+    if (!f.IsDeleted && User.IsInRole("admin"))
+    {
+        @Html.ActionLink(f.Name, "Index", "Topic", new { ForumId = f.ForumId }, null)
+        @Html.ActionLink("Delete", "DeleteForum", "Forum", new { ForumId = f.ForumId }, null) <br />
+        @f.Description <br /> <br />
     }
+    else if (!f.IsDeleted && !User.IsInRole("admin"))
+    {
+        @Html.ActionLink(f.Name, "Index", "Topic", new { ForumId = f.ForumId }, null) <br />
+        @f.Description <br />  <br />
+
+    }
+}
+
+@if (User.IsInRole("admin"))
+{
+    <h3>Admin View: List of deleted forums</h3>
+
+    foreach (Waggle.Models.Forum f in Model)
+    {
+
+        if (f.IsDeleted)
+        {
+            @Html.ActionLink(f.Name, "Index", "Topic", new { ForumId = f.ForumId }, null)
+            @Html.ActionLink("Undelete", "UndeleteForum", "Forum", new { ForumId = f.ForumId }, null)
+            <br />@f.Description <br /> <br />
+        }
+    }
+
 }

@@ -17,7 +17,28 @@
         }
         @foreach (Waggle.Models.Topic t in Model.Topics)
         {
-            @Html.ActionLink(t.Name, "Index", "Post", new { TopicId = t.TopicId }, null) <br /><br />
+            if (!t.IsDeleted && User.IsInRole("admin"))
+            {
+                @Html.ActionLink(t.Name, "Index", "Post", new { TopicId = t.TopicId }, null) <br /><br />
+            }
+            else if (!t.IsDeleted && !User.IsInRole("admin"))
+            {
+                @Html.ActionLink(t.Name, "Index", "Post", new { TopicId = t.TopicId }, null) <br /><br />
+
+            }
+        }
+
+        @if (User.IsInRole("admin"))
+        {
+            <h3>Admin View: List of deleted topics</h3>
+            foreach (Waggle.Models.Topic t in Model.Topics)
+            {
+                if (t.IsDeleted)
+                {
+                    @Html.ActionLink(t.Name, "Index", "Post", new { TopicId = t.TopicId }, null) <br /><br />
+                }
+
+            }
         }
     </div>
     <div class="col-sm-9 col-md-6 col-lg-4">
