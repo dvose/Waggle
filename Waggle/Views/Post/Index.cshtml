@@ -8,14 +8,62 @@
 <h3>@Html.ActionLink("Create Post", "CreatePost", "Post", new { TopicId = Model.TopicId }, null)</h3><br /><br />
 @foreach (Waggle.Models.Post p in Model.Posts)
 {
-    Waggle.Models.User curUser = Waggle.Models.User.GetUserById(p.UserId);
-    <p style="font-size:11px">
-        <img src=@curUser.AvatarPath width="30" height="30" />
+    if(User.IsInRole("admin"))
+    {
+        if(!p.IsDeleted)
+        { 
+            Waggle.Models.User curUser = Waggle.Models.User.GetUserById(p.UserId);
+            <p style="font-size:11px">
+                <img src=@curUser.AvatarPath width="30" height="30" />
 
-        @curUser.Name at @p.PostTime
-    </p>
-    <p style="font-size:14px">
-        @p.Body
-    </p>
-    <br /><br />
+                @curUser.Name at @p.PostTime
+
+                @Html.ActionLink("Delete", "DeletePost", "Post", new { PostId = p.PostId }, null)
+            </p>
+            <p style="font-size:14px">
+                @p.Body
+            </p>
+            <br /><br />
+        }
+    }
+    else if (!User.IsInRole("admin"))
+    {
+        if(!p.IsDeleted)
+        { 
+            Waggle.Models.User curUser = Waggle.Models.User.GetUserById(p.UserId);
+            <p style="font-size:11px">
+                <img src=@curUser.AvatarPath width="30" height="30" />
+
+                @curUser.Name at @p.PostTime
+            </p>
+            <p style="font-size:14px">
+                @p.Body
+            </p>
+            <br /><br />
+        }
+    }
+}
+
+@if (User.IsInRole("admin"))
+{
+    <h3>Admin View: List of deleted posts</h3>
+
+    foreach (Waggle.Models.Post p in Model.Posts)
+    {
+        if (p.IsDeleted)
+        {
+           Waggle.Models.User curUser = Waggle.Models.User.GetUserById(p.UserId);
+            <p style="font-size:11px">
+                <img src=@curUser.AvatarPath width="30" height="30" />
+
+                @curUser.Name at @p.PostTime
+
+                @Html.ActionLink("Undelete", "UndeletePost", "Post", new { PostId = p.PostId }, null)
+            </p>
+            <p style="font-size:14px">
+                @p.Body
+            </p>
+            <br /><br />
+        }
+    }
 }

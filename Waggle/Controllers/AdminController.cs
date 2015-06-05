@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using Waggle.Filters;
 using Waggle.Models;
 using Waggle.ViewModels;
@@ -27,7 +28,6 @@ namespace Waggle.Controllers
             else {
                 return RedirectToAction("Http404", "Error");
             }
-
         }
 
         //
@@ -41,8 +41,6 @@ namespace Waggle.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    
-
                     using (ForumContext Fdb = new ForumContext())
                     {
                         Forum newforum = new Forum();
@@ -54,15 +52,6 @@ namespace Waggle.Controllers
                         Fdb.SaveChanges();
                         return View("Index", "Forum", Fdb.Forums);
                     }
-
-                    
-                    
-
-                    //Forum.ForumList.Add(newforum);
-                    
-
-                    
-
                 }
                 else
                     return View("Forbidden");
@@ -70,8 +59,7 @@ namespace Waggle.Controllers
             else
             {
                 return RedirectToAction("Http404", "Error");
-            }
-          
+            } 
         }
 
         // GET: UserList
@@ -92,7 +80,110 @@ namespace Waggle.Controllers
             {
                 return RedirectToAction("Http404", "Error");
             }
-            
+        }
+
+        [Authorize]
+        public ActionResult SuspendUser(int userId)
+        {
+            if (User.IsInRole("admin"))
+            {
+                using (UserEntitiesContext db = new UserEntitiesContext())
+                {
+                    var users = db.Users.ToList();
+
+                    foreach (User u in db.Users)
+                    {
+                        if (u.Id == userId)
+                        {
+                            u.IsSuspended = true;
+                        }
+                    }
+                    db.SaveChanges();
+                    return View("UserList", users);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Http404", "Error");
+            }
+        }
+
+        [Authorize]
+        public ActionResult Unsuspend(int userId)
+        {
+            if (User.IsInRole("admin"))
+            {
+                using (UserEntitiesContext db = new UserEntitiesContext())
+                {
+                    var users = db.Users.ToList();
+
+                    foreach (User u in db.Users)
+                    {
+                        if (u.Id == userId)
+                        {
+                            u.IsSuspended = false;
+                        }
+                    }
+                    db.SaveChanges();
+                    return View("UserList", users);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Http404", "Error");
+            }
+        }
+
+        [Authorize]
+        public ActionResult Promote (int userId)
+        {
+            if (User.IsInRole("admin"))
+            {
+                using (UserEntitiesContext db = new UserEntitiesContext())
+                {
+                    var users = db.Users.ToList();
+
+                    foreach (User u in db.Users)
+                    {
+                        if (u.Id == userId)
+                        {
+                            Roles.RemoveUserFromRole(u.Email, "normal");
+                            Roles.AddUserToRole(u.Email, "admin");
+                        }
+                    }
+                    return View("UserList", users);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Http404", "Error");
+            }
+        }
+
+        [Authorize]
+        public ActionResult Demote(int userId)
+        {
+            if (User.IsInRole("admin"))
+            {
+                using (UserEntitiesContext db = new UserEntitiesContext())
+                {
+                    var users = db.Users.ToList();
+
+                    foreach (User u in db.Users)
+                    {
+                        if (u.Id == userId)
+                        {
+                            Roles.RemoveUserFromRole(u.Email, "admin");
+                            Roles.AddUserToRole(u.Email, "normal");
+                        }
+                    }
+                    return View("UserList", users);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Http404", "Error");
+            }
         }
 
         // GET: Forbidden

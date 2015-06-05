@@ -127,7 +127,6 @@ namespace Waggle.Controllers
             {
                 return RedirectToAction("Http404", "Error");
             }
-
         }
 
         [Authorize]
@@ -173,6 +172,5 @@ namespace Waggle.Controllers
                 return RedirectToAction("Http404", "Error");
             }
         }
-
     }
 }

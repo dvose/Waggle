@@ -9,12 +9,23 @@
 @foreach (var user in Model)
 {
     <body><h2><img src=@user.AvatarPath height="50" width="50"/> @Html.ActionLink(@user.Name, "Show", "User", routeValues: new {Id=@user.Id}, htmlAttributes: null)</h2><br/>Email: @user.Email
-    <br/>User Suspension: @Html.CheckBoxFor(x => user.IsSuspended)
+    <br/>User Suspension: @user.IsSuspended 
+    <br />
+    @if (!user.IsSuspended)
+    {
+        @Html.ActionLink("Suspend", "SuspendUser", "Admin", new { UserId = user.Id }, null) 
+    }
+    @if (user.IsSuspended)
+    {
+        @Html.ActionLink("Unsuspend", "UnsuspendUser", "Admin", new { UserId = user.Id }, null)
+    }
     <br/>User Admin:  
     @if (Roles.IsUserInRole(@user.Email, "admin")) { 
         <text>Admin</text>
+        <br />@Html.ActionLink("Demote", "Demote", "Admin", new { UserId = user.Id }, null)
     } 
     else{
         <text>Not Admin</text>
+        <br />@Html.ActionLink("Promote", "Promote", "Admin", new { UserId = user.Id }, null)
     }<br /></body>
 }

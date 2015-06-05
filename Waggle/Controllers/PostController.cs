@@ -106,5 +106,57 @@ namespace Waggle.Controllers
             }
             return View();
         }
+
+        /*
+        [Authorize]
+        public ActionResult DeletePost(int postId)
+        {
+            if (User.IsInRole("admin"))
+            {
+                using (PostContext Pdb = new PostContext())
+                {
+                    foreach (Post p in Pdb.Posts)
+                    {
+                        if (p.PostId == postId)
+                        {
+                            p.IsDeleted = true;
+                        }
+                    }
+                    Pdb.SaveChanges();
+
+                return View("Index");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Http404", "Error");
+            }
+        }
+
+        [Authorize]
+        public ActionResult UndeletePost(int postId)
+        {
+            if (User.IsInRole("admin"))
+            {
+                using (PostContext Pdb = new PostContext())
+                {
+                    foreach (Post p in Pdb.Posts)
+                    {
+                        if (p.PostId == postId)
+                        {
+                            p.IsDeleted = false;
+                        }
+                    }
+                    Pdb.SaveChanges();
+
+                    return View("Index");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Http404", "Error");
+            }
+        }
+        */
     }
 }
