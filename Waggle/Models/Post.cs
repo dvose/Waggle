@@ -35,6 +35,26 @@ namespace Waggle.Models
         [Column("Date_Stamp")]
         public string PostTime { get; set; }
 
+        public int AttachmentId { get; set; }
+
+        [NotMapped]
+        public Waggle.Models.File attachment { get; set; }
+
+        public void findAttachment()
+        {
+            using (FileEntitiesContext db = new FileEntitiesContext())
+            {
+                foreach (Waggle.Models.File file in db.Files)
+                {
+                    if (this.AttachmentId == file.Id)
+                    {
+                        this.attachment = file;
+                        return;
+                    }
+                }
+            }
+        }
+
         //temp posts for testing until database is implemented
         //public static List<Post> PostList;
         //public static void SetUpPostList()

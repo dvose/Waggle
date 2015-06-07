@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,11 +15,12 @@ namespace Waggle.Controllers
     public class PostController : Controller
     {
         private PostContext db = new PostContext();
-        public static TopicPost tp { get; set; }
+        public static TopicPost tp = new TopicPost();
 
          [InitializeSimpleMembershipAttribute]
         public ActionResult Index(int TopicId)
         {
+            ViewData["currentUserId"] = WebSecurity.CurrentUserId;
             //PostList is a View Model that should contain forum/topic info to pass on to the View.
             PostList list = new PostList();
 
@@ -46,6 +48,7 @@ namespace Waggle.Controllers
                         if (f.ForumId == topic.ForumId)
                         {
                             list.ForumName = f.Name;
+                            tp.forumId = f.ForumId;
                         }
                     }
                 }
@@ -57,6 +60,8 @@ namespace Waggle.Controllers
                     {
                         if (p.TopicId == TopicId)
                         {
+                            if (p.AttachmentId != 0)
+                                p.findAttachment();
                             posts.Add(p);
                         }
                     }
@@ -87,13 +92,58 @@ namespace Waggle.Controllers
             return View(tp);
         }
 
-        public ActionResult PostCreated(string PostBody)
+        [HttpPost]
+        public ActionResult PostCreated(string PostBody, HttpPostedFileBase uploadFile)
         {
+            int attachmentId = 0;
+             if (uploadFile != null) { 
+                var fileName = Path.GetFileName(uploadFile.FileName);
+                var fileDisplayName = fileName;
+                string extension = Path.GetExtension(uploadFile.FileName);
+                string strPath = "~\\Uploads\\" + WebSecurity.CurrentUserId;
+                var path = Path.Combine(Server.MapPath(strPath), fileName);
+
+                //handles duplicate file names
+                if (System.IO.File.Exists(path)) { 
+                    int i = 1;
+                    var originalName = fileName;
+                    while (System.IO.File.Exists(path)) {
+                        fileName = i + originalName;
+                        path = Path.Combine(Server.MapPath(strPath), fileName);
+                        i++;
+                    }
+                }
+                uploadFile.SaveAs(path);
+
+                //save file information
+
+                //define context
+                using (FileEntitiesContext db = new FileEntitiesContext())
+                {
+                    //create new model
+                    Waggle.Models.File newFile = new Waggle.Models.File();
+                    
+                    //give model it's attributes - populating columns
+                    newFile.fileName = fileName;
+                    newFile.Forum_Id = tp.forumId;
+                    newFile.fileDisplayName = fileDisplayName;
+                    newFile.filePath = path;
+                    newFile.fileType = extension;
+                    newFile.User_Id = WebSecurity.CurrentUserId;
+                    
+                    //save row
+                    db.Files.Add(newFile);
+                    db.SaveChanges();
+                    attachmentId = newFile.Id;
+                }
+             }
+
             Post p = new Post();
             p.UserId = tp.NewPostUserId;
             p.TopicId = tp.PostTopic.TopicId;
             p.Body = PostBody;
             p.IsDeleted = false;
+            p.AttachmentId = attachmentId;
             // DateTime d = DateTime.Now;
             // string time = d.DayOfWeek + " " + d.Month + " " + d.day;
             p.PostTime = DateTime.Now.ToString();

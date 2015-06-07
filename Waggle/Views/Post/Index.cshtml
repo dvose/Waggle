@@ -23,7 +23,12 @@
             <p style="font-size:14px">
                 @p.Body
             </p>
-            <br /><br />
+            if (p.attachment != null) { 
+                <p style="font-size:14px">Attachment: <br/>
+                    @Html.ActionLink(p.attachment.fileDisplayName, "Download", "File", new { Id = p.attachment.Id }, null) @Html.ActionLink("Delete", "Delete", "File", new { Id = p.attachment.Id }, null)
+                </p>
+
+           }<br />
         }
     }
     else if (!User.IsInRole("admin"))
@@ -31,7 +36,7 @@
         if(!p.IsDeleted)
         { 
             Waggle.Models.User curUser = Waggle.Models.User.GetUserById(p.UserId);
-            <p style="font-size:11px">
+            <p style="font-size:14px">
                 <img src=@curUser.AvatarPath width="30" height="30" />
 
                 @curUser.Name at @p.PostTime
@@ -39,7 +44,14 @@
             <p style="font-size:14px">
                 @p.Body
             </p>
-            <br /><br />
+            if (p.attachment != null) { 
+                <p style="font-size:11px">Attachment: <br/>
+                    @Html.ActionLink(p.attachment.fileDisplayName, "Download", "File", new { Id = p.attachment.Id }, null) 
+                    @if ((ViewData["currentUserId"] != null && (int)ViewData["currentUserId"] == p.attachment.User_Id)) {
+                        @Html.ActionLink("Delete", "Delete", "File", new { Id = p.attachment.Id }, null)
+                    }
+                </p>
+           }<br />
         }
     }
 }
@@ -63,7 +75,12 @@
             <p style="font-size:14px">
                 @p.Body
             </p>
-            <br /><br />
+            if (p.attachment != null) { 
+                <p style="font-size:14px">Attachment: <br/>
+                    @Html.ActionLink(p.attachment.fileDisplayName, "Download", "File", new { Id = p.attachment.Id }, null) @Html.ActionLink("Delete", "Delete", "File", new { Id = p.attachment.Id }, null)
+                </p>
+
+           }<br />
         }
     }
 }

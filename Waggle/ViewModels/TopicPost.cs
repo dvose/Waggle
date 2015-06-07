@@ -16,5 +16,6 @@ namespace Waggle.ViewModels
         public string NewPostBody { get; set; }
         public int NewPostUserId { get; set; }
         public string NewTopicTitle { get; set; }
+        public int forumId { get; set; }
     }
 }

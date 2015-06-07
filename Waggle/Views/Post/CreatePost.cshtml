@@ -11,17 +11,13 @@
 
 @Html.ActionLink("Create Post", "PostCreated", "Post", new { npb = Model.NewPostBody,  }, null)*@
 
-<form action="/Post/PostCreated" method="post">
-    <fieldset>
-        <legend>Registration Form</legend>
-        <ol>
-            <li>
-                <textarea id="PostBody" name="PostBody"></textarea>
-            </li>
-        </ol>
-        <input type="submit" value="Create Post" />
-    </fieldset>
-</form>
+@using (Html.BeginForm("PostCreated", "Post", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+     <textarea id="PostBody" name="PostBody"></textarea>
+    <label for="uploadFile">Attach a File</label>
+    <input type="file" name="uploadFile" />
+    <input type="submit" id="btnSubmit" value="Create Post" />
+}
 
 @*<input type="button" value="Create Post" onclick="createPost(body)"/>
 
