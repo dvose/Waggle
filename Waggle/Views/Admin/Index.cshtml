@@ -1,4 +1,4 @@
-﻿@model Waggle.ViewModels.AdminPanel
+﻿@model List<Waggle.ViewModels.AdminPanel>
 
 @{
     ViewBag.Title = "Index";
@@ -6,47 +6,5 @@
 
 <h2>Administrator Panel</h2>
 
-<h3>Create New Forum</h3>
 <br />
-@using (Html.BeginForm())
-{
-
-    <fieldset>
-        <legend>Registration Form</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.forum.Name)
-                @Html.TextBoxFor(m => m.forum.Name)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.forum.Description)
-                @Html.TextBoxFor(m => m.forum.Description)
-            </li>
-        </ol>
-        <input type="submit" value="Create Forum" />
-    </fieldset>
-}
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
-
-<h3>Deleted Forums</h3>
-@using (Html.BeginForm())
-{
-    <fieldset>
-        <legend>Deleted Forums</legend>
-        <ol>To be added.</ol>
-    </fieldset>
-}
-
-<h3>Deleted Posts</h3>
-@using (Html.BeginForm())
-{
-    <fieldset>
-        <legend>Deleted Posts</legend>
-        <ol>To be added.</ol>
-    </fieldset>
-    
-    <h3>@Html.ActionLink("View List of Users", "UserList")</h3>
-}
+<h3>@Html.ActionLink("View List of Users", "UserList")</h3>

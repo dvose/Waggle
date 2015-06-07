@@ -1,0 +1,31 @@
+﻿@model Waggle.ViewModels.AdminPanel
+
+@{
+    ViewBag.Title = "CreateForum";
+}
+
+
+<h2>Create New Forum</h2>
+<br />
+@using (Html.BeginForm())
+{
+
+    <fieldset>
+        <legend>Registration Form</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.forum.Name)
+                @Html.TextBoxFor(m => m.forum.Name)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.forum.Description)
+                @Html.TextBoxFor(m => m.forum.Description)
+            </li>
+        </ol>
+        <input type="submit" value="Create Forum" />
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
