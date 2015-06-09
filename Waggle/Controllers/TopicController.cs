@@ -100,6 +100,7 @@ namespace Waggle.Controllers
             p.Body = PostBody;
             p.IsDeleted = false;
             p.PostTime = DateTime.Now.ToString();
+            p.ReplyTo = -1;
             if (ModelState.IsValid)
             {
                 Pdb.Posts.Add(p);

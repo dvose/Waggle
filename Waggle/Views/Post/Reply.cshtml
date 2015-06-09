@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Reply";
+}
+
+<h2>Reply to Post</h2>
+<form action="/Post/ReplyCreated" method="post">
+    <fieldset>
+        <legend>Registration Form</legend>
+        <ol>
+            <li>
+                <textarea id="PostBody" name="PostBody"></textarea>
+            </li>
+        </ol>
+        <input type="submit" value="Create Post" />
+    </fieldset>
+</form>

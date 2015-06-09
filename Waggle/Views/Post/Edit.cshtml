@@ -1,0 +1,16 @@
+﻿@model Waggle.ViewModels.TopicPost
+@{
+    ViewBag.Title = "Edit";
+}
+<h2>Edit a Post</h2>
+<form action="/Post/Edited" method="post">
+    <fieldset>
+        <legend>Registration Form</legend>
+        <ol>
+            <li>
+                <textarea id="PostBody" name="PostBody">@Model.EditPost.Body</textarea>
+            </li>
+        </ol>
+        <input type="submit" value="Edit Post" />
+    </fieldset>
+</form>

@@ -15,6 +15,10 @@ namespace Waggle.ViewModels
         [DataType(DataType.MultilineText)]
         public string NewPostBody { get; set; }
         public int NewPostUserId { get; set; }
+        public Post EditPost { get; set; }
+        public int EditPostId { get; set; }
         public string NewTopicTitle { get; set; }
+
+        public int replyToPost { get; set; }
     }
 }

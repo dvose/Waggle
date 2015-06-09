@@ -34,6 +34,26 @@ namespace Waggle.Models
         //public User Deleter;
         [Column("Date_Stamp")]
         public string PostTime { get; set; }
+        public int ReplyTo { get; set; }
+
+        /*
+         * Return a list of all replies to the given post
+         */
+        public static List<Post> GetReplies(Post topPost)
+        {
+            List<Post> replies = new List<Post>();
+            using (PostContext dbPosts = new PostContext())
+            {
+                foreach (Post potentialReply in dbPosts.Posts)
+                {
+                    if (potentialReply.ReplyTo == topPost.PostId)
+                    {
+                        replies.Add(potentialReply);
+                    }
+                }
+            }
+            return replies;
+        }
 
         //temp posts for testing until database is implemented
         //public static List<Post> PostList;

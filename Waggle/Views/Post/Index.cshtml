@@ -6,16 +6,74 @@
 
 <h2>@Html.ActionLink("Home", "Index", "Forum") > @Html.ActionLink(Model.ForumName, "Index", "Topic", new { ForumId = @Model.ForumId }, null) > @Model.TopicName</h2>
 <h3>@Html.ActionLink("Create Post", "CreatePost", "Post", new { TopicId = Model.TopicId }, null)</h3><br /><br />
-@foreach (Waggle.Models.Post p in Model.Posts)
+@foreach(Waggle.Models.Post p in Model.Posts)
 {
-    Waggle.Models.User curUser = Waggle.Models.User.GetUserById(p.UserId);
-    <p style="font-size:11px">
-        <img src=@curUser.AvatarPath width="30" height="30" />
+    if(p.ReplyTo < 0) //This is a top-level post, i.e. not a reply
+    { 
+        Waggle.Models.User curUser = Waggle.Models.User.GetUserById(p.UserId);
+        //if(p.IsDeleted && curUser.IsAdmin)
+        //{
+            //Show "This post is deleted. It and its replies cannot be seen by normal users."
+        //}
+        if(!p.IsDeleted) //or is admin
+        { 
+            <p style="font-size:11px">
+                <img src=@curUser.AvatarPath width="30" height="30" />
 
-        @curUser.Name at @p.PostTime
-    </p>
-    <p style="font-size:14px">
-        @p.Body
-    </p>
-    <br /><br />
+                @Html.ActionLink(@curUser.Name, "Show", "User", new { id = @curUser.Id }, null) at @p.PostTime 
+                @Html.ActionLink("Reply", "Reply", "Post", new { TopicId = Model.TopicId, PostId = p.PostId }, null)
+                @if (curUser.Id == WebSecurity.CurrentUserId) //or is admin
+                {
+                    @Html.ActionLink("Edit", "Edit", "Post", new { PostId = p.PostId }, null)
+                    @Html.ActionLink("Delete", "Delete", "Post", new { PostId = p.PostId }, null)
+                }
+            </p>
+            <p style="font-size:14px">
+                @p.Body
+            </p>
+            <br />
+            @DisplayReplies(p)
+            <br />
+        }
     }
+}
+
+@helper DisplayReplies(Waggle.Models.Post p)
+{
+    List<Waggle.Models.Post> replies = Waggle.Models.Post.GetReplies(p);
+    if (replies.Count <= 0)
+    {
+        return;
+    }
+    Waggle.Models.User poster = Waggle.Models.User.GetUserById(p.UserId);
+    foreach (Waggle.Models.Post reply in replies)
+    {
+        Waggle.Models.User replier = Waggle.Models.User.GetUserById(reply.UserId);
+        //if(reply.IsDeleted && replier.IsAdmin)
+        //{
+        //Show "This post is deleted. It and its replies cannot be seen by normal users."
+        //}
+        if(!reply.IsDeleted) //or is admin
+        {             
+            <blockquote>
+                <p style="font-size:11px">
+                    <img src=@replier.AvatarPath width="30" height="30" />
+
+                    @Html.ActionLink(@replier.Name, "Show", "User", new { id = @replier.Id }, null) at @reply.PostTime in response to @poster.Name 
+                    @Html.ActionLink("Reply", "Reply", "Post", new { TopicId = Model.TopicId, PostId = reply.PostId }, null)
+                    @if(replier.Id == WebSecurity.CurrentUserId) //or is admin
+                    {
+                        @Html.ActionLink("Edit", "Edit", "Post", new { PostId = reply.PostId }, null)
+                        @Html.ActionLink("Delete", "Delete", "Post", new { PostId = reply.PostId }, null)
+                    }
+                </p>
+                <p style="font-size:14px">
+                    @reply.Body
+                </p>
+                <br />
+                @DisplayReplies(reply)
+            </blockquote>
+        }
+    }
+}
+
