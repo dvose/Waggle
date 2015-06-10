@@ -339,6 +339,9 @@
     <Content Include="Views\Post\PostCreated.cshtml" />
     <Content Include="Views\Topic\CreateTopic.cshtml" />
     <Content Include="Views\Forum\CreateForum.cshtml" />
+    <Content Include="Views\Post\Edit.cshtml" />
+    <Content Include="Views\Post\Delete.cshtml" />
+    <Content Include="Views\Post\Reply.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

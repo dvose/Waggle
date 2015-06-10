@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Reply";
+}
+
+<h2>Reply to Post</h2>
+@using (Html.BeginForm("ReplyCreated", "Post", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <textarea id="PostBody" name="PostBody"></textarea>
+    <label for="uploadFile">Attach a File</label>
+    <input type="file" name="uploadFile" />
+    <input type="submit" id="btnSubmit" value="Reply" />
+}
+

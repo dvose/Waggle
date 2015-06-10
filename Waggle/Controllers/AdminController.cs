@@ -109,7 +109,7 @@ namespace Waggle.Controllers
         }
 
         [Authorize]
-        public ActionResult Unsuspend(int userId)
+        public ActionResult UnsuspendUser(int userId)
         {
             if (User.IsInRole("admin"))
             {

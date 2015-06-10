@@ -40,6 +40,17 @@ namespace Waggle.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
+            using (UserEntitiesContext db = new UserEntitiesContext()) { 
+                foreach(User u in db.Users){
+                    if (u.Email == model.Email) {
+                        if (u.IsSuspended) {
+                            ModelState.AddModelError("", "You are currently suspended! Contact an administrator");
+                            return View(model);
+                        }
+                        break;
+                    }
+                }
+            }
             if (ModelState.IsValid && WebSecurity.Login(model.Email, model.Password, persistCookie: model.RememberMe))
             {
                 return RedirectToAction("Index", "Forum");

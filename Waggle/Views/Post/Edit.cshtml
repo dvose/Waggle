@@ -1,0 +1,21 @@
+﻿ @model Waggle.Models.Post
+ @{
+     ViewBag.Title = "Edit";
+     }
+ <h2>Edit a Post</h2>
+
+@using (Html.BeginForm("Edited", "Post", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <textarea id="PostBody" name="PostBody">@Model.Body</textarea>
+    if (Model.attachment != null) { 
+         Attachment: <br />
+         @Html.ActionLink(Model.attachment.fileDisplayName, "Download", "File", new { Id = Model.attachment.Id }, null) @Html.ActionLink("Delete", "Delete", "File", new { Id = Model.attachment.Id }, null)
+        <br/>
+    }
+    else {
+        <label for="uploadFile">Attach a File</label>
+        <input type="file" name="uploadFile" />
+    }
+    
+    <input type="submit" id="btnSubmit" value="Edit Post" />
+}
