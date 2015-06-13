@@ -172,5 +172,49 @@ namespace Waggle.Controllers
                 return RedirectToAction("Http404", "Error");
             }
         }
+
+        [Authorize]
+        public ActionResult EditForum(Forum model)
+        {
+            if (User.IsInRole("admin"))
+            {
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Admin");
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult SubmitEdit(Forum model)
+        {
+            if (User.IsInRole("admin"))
+            {
+                if (ModelState.IsValid)
+                {
+                    using (ForumContext Fdb = new ForumContext())
+                    {
+                        foreach (Forum f in Fdb.Forums)
+                        {
+                            if (f.ForumId == model.ForumId)
+                            {
+                                f.Name = model.Name;
+                                f.Description = model.Description;
+                            }
+                        }
+                        Fdb.SaveChanges();
+                        return RedirectToAction("Index", "Forum", Fdb.Forums);
+                    }
+
+                }
+                return RedirectToAction("Index", "Forum");
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Admin");
+            }
+        }
     }
 }

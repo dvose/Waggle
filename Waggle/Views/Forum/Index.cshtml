@@ -16,6 +16,7 @@
     if (!f.IsDeleted && User.IsInRole("admin"))
     {
         @Html.ActionLink(f.Name, "Index", "Topic", new { ForumId = f.ForumId }, null)
+        @Html.ActionLink("Edit", "EditForum", "Forum", f, f.ForumId)
         @Html.ActionLink("Delete", "DeleteForum", "Forum", new { ForumId = f.ForumId }, null) <br />
         @f.Description <br /> <br />
     }

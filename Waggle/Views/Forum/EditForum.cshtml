@@ -1,0 +1,38 @@
+﻿@model Waggle.Models.Forum
+@{
+    ViewBag.Title = "EditForum";
+}
+<h2>Edit Forum</h2>
+
+@using (Html.BeginForm("SubmitEdit", "Forum"))
+{
+    <fieldset>
+        <legend>Edit Forum</legend>
+        <br />
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.ForumId)
+                @Html.TextAreaFor(m => m.ForumId)
+            </li>
+        </ol>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.Name)
+                @Html.TextAreaFor(m => m.Name)
+            </li>
+        </ol>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.Description)
+                @Html.TextAreaFor(m => m.Description)
+            </li>
+        </ol>
+        <input type="submit" value="Save Changes" />
+    </fieldset>
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
