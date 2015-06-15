@@ -2,37 +2,78 @@
 @{
     ViewBag.Title = "EditForum";
 }
-<h2>Edit Forum</h2>
+<div class="container">
+    <div class="row">
 
-@using (Html.BeginForm("SubmitEdit", "Forum"))
-{
-    <fieldset>
-        <legend>Edit Forum</legend>
-        <br />
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.ForumId)
-                @Html.TextAreaFor(m => m.ForumId)
-            </li>
-        </ol>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.Name)
-                @Html.TextAreaFor(m => m.Name)
-            </li>
-        </ol>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.Description)
-                @Html.TextAreaFor(m => m.Description)
-            </li>
-        </ol>
-        <input type="submit" value="Save Changes" />
-    </fieldset>
-}
+        <div class="col-sm-3 col-md-6 col-lg-8">
+            <h2>Edit Forum</h2>
+            @using (Html.BeginForm("SubmitEdit", "Forum"))
+            {
+
+                <fieldset>
+                    <legend>Edit Forum</legend>
+                    <br />
+                    <ol>
+                        <li>
+                            @Html.LabelFor(m => m.ForumId)
+                            @Html.TextAreaFor(m => m.ForumId)
+                        </li>
+                    </ol>
+                    <ol>
+                        <li>
+                            @Html.LabelFor(m => m.Name)
+                            @Html.TextAreaFor(m => m.Name)
+                        </li>
+                    </ol>
+                    <ol>
+                        <li>
+                            @Html.LabelFor(m => m.Description)
+                            @Html.TextAreaFor(m => m.Description)
+                        </li>
+                    </ol>
+                    <input type="submit" value="Save Changes" />
+                </fieldset>
+            }
+      </div>
+      <div class="col-sm-9 col-md-6 col-lg-4">
+            <h1>Privacy/Permissions</h1>
+            <br />
+            <span style="font-size: 1.2em">Privacy Mode - </span>
+
+            @if (Model.IsPrivate)
+            {
+                <b style="font-size: 1.2em">Private</b>
+            }
+            else
+            {
+                <b style="font-size: 1.2em">Public</b>
+
+            }
+            <br />
+            @Html.ActionLink("Toggle Privacy", "TogglePrivacy", "Forum", new { forumId = Model.ForumId }, null)
 
 
+            @if (Model.IsPrivate)
+            {
+                <h3>Permitted Users</h3>
+                foreach (Waggle.Models.User user in Model.getPermittedUsers())
+                {
+                    <ul>
+                        <li>@user.Email @Html.ActionLink("X", "RemovePermission", "ForumPermission", new { userId = user.Id, forumId = Model.ForumId }, null)</li>
+                    </ul>
+                }
+                using (Html.BeginForm("AddPermission", "ForumPermission", new { forumId = Model.ForumId }))
+                {
+                    <label>User Email</label>
+                    <input type="text" name="userEmail" />
+                    <input type="submit" value="Add User" />
+                }
+            }
+            </div>
+        </div>
+    </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+
+            @section Scripts {
+                @Scripts.Render("~/bundles/jqueryval")
+            }

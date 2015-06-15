@@ -26,16 +26,16 @@
                 @Html.PasswordFor(m => m.Password)
                 @Html.ValidationMessageFor(m => m.Password)
             </li>
-            <li>
+            @*<li>
                 @Html.CheckBoxFor(m => m.RememberMe)
                 @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
-            </li>
+            </li>*@
         </ol>
         <input type="submit" value="Log in" />
     </fieldset>
-    <p>
+    @*<p>
         @Html.ActionLink("Register", "Register") if you don't have an account.
-    </p>
+    </p>*@
 }
 </section>
 

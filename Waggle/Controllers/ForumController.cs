@@ -14,6 +14,7 @@ namespace Waggle.Controllers
     public class ForumController : Controller
     {
         private ForumContext db = new ForumContext();
+        [InitializeSimpleMembershipAttribute]
         public ActionResult Index()
         {
             //These create lists of Forums, Topics, and Posts used for testing until the database is up.
@@ -174,10 +175,18 @@ namespace Waggle.Controllers
         }
 
         [Authorize]
-        public ActionResult EditForum(Forum model)
+        public ActionResult EditForum(int ForumId)
         {
             if (User.IsInRole("admin"))
             {
+                Forum model = null;
+                using (ForumContext db = new ForumContext()) {
+                    foreach (Forum forum in db.Forums) {
+                        if (forum.ForumId == ForumId) {
+                            model = forum;
+                        }
+                    }
+                }
                 return View(model);
             }
             else
@@ -185,6 +194,29 @@ namespace Waggle.Controllers
                 return RedirectToAction("Forbidden", "Admin");
             }
         }
+
+        [Authorize]
+        public ActionResult TogglePrivacy(int forumId) {
+            if (User.IsInRole("admin"))
+            {
+                Forum f = null;
+                using (ForumContext db = new ForumContext())
+                {
+                    foreach (Forum forum in db.Forums)
+                    {
+                        if (forum.ForumId == forumId)
+                        {
+                            forum.IsPrivate = !forum.IsPrivate;
+                            f = forum;
+                        }
+                    }
+                    db.SaveChanges();
+                    return Redirect(ControllerContext.HttpContext.Request.UrlReferrer.ToString());
+                }             
+            }
+            return Redirect(ControllerContext.HttpContext.Request.UrlReferrer.ToString());
+        }
+        
 
         [HttpPost]
         [Authorize]

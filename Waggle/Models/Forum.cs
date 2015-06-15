@@ -25,6 +25,37 @@ namespace Waggle.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsDeleted { get; set; }
+        public bool IsPrivate { get; set; }
+
+         public bool isUserPermited(int userId) {
+             if (!this.IsPrivate)
+                 return true;
+             using (Forum_PermissionContext db = new Forum_PermissionContext()) {
+                 foreach (Forum_Permission fp in db.Forum_Permissions) {
+                     if (fp.ForumId == this.ForumId && fp.UserId == userId) {
+                         return true;
+                     }
+                 }
+             }
+               return false;
+         }
+
+         public List<User> getPermittedUsers() {
+             List<User> users = new List<User>();
+             using (Forum_PermissionContext fpdb = new Forum_PermissionContext()) {
+                 using (UserEntitiesContext udb = new UserEntitiesContext())
+                 {
+                     foreach (Forum_Permission fp in fpdb.Forum_Permissions)
+                     {
+                         if (fp.ForumId == this.ForumId)
+                         {
+                            users.Add(udb.Users.Where(x => x.Id == fp.UserId).FirstOrDefault());
+                         }
+                     }
+                 }
+             }
+             return users;
+         }
         //public User Deleter;
 
         //Set some forums up for testing. Forum list will come from Database once there is a database!

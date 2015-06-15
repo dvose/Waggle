@@ -29,6 +29,7 @@ namespace Waggle
             System.Data.Entity.Database.SetInitializer<Waggle.Models.PostContext>(null);
             System.Data.Entity.Database.SetInitializer<Waggle.Models.ForumContext>(null);
             System.Data.Entity.Database.SetInitializer<Waggle.Models.FileEntitiesContext>(null);
+            System.Data.Entity.Database.SetInitializer<Waggle.Models.Forum_PermissionContext>(null);
         }
     }
 }

@@ -185,6 +185,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\ForumPermissionController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\ForumController.cs" />
     <Compile Include="Controllers\PostController.cs" />
@@ -197,6 +198,7 @@
     </Compile>
     <Compile Include="Models\FileModel.cs" />
     <Compile Include="Models\Forum.cs" />
+    <Compile Include="Models\Forum_Permission.cs" />
     <Compile Include="Models\Post.cs" />
     <Compile Include="Models\Topic.cs" />
     <Compile Include="Models\UserModels.cs" />
@@ -204,6 +206,7 @@
     <Compile Include="ViewModels\AdminPanel.cs" />
     <Compile Include="ViewModels\PostList.cs" />
     <Compile Include="ViewModels\TopicPost.cs" />
+    <Compile Include="ViewModels\ForumShowPermission.cs" />
     <Compile Include="ViewModels\UserShowModel.cs" />
   </ItemGroup>
   <ItemGroup>
