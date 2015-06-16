@@ -6,11 +6,13 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Security;
+using Waggle.Filters;
 using Waggle.Models;
 using WebMatrix.WebData;
 
 namespace Waggle.Controllers
 {
+    [InitializeSimpleMembershipAttribute]
     public class ForumPermissionController : Controller
     {
         [HttpPost]

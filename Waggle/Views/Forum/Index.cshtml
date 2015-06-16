@@ -25,9 +25,11 @@
     }
     else if (!f.IsDeleted && !User.IsInRole("admin"))
     {
+        <br/>
         if (!f.IsPrivate || (f.IsPrivate && f.isUserPermited(WebSecurity.CurrentUserId))) {
-            @f.Description <br />  <br />
+               
             @Html.ActionLink(f.Name, "Index", "Topic", new { ForumId = f.ForumId }, null) <br />
+            @f.Description <br />
         }
 
     }

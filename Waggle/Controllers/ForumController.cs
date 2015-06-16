@@ -162,7 +162,7 @@ namespace Waggle.Controllers
                         newforum.Description = model.forum.Description;
                         Fdb.Forums.Add(newforum);
                         Fdb.SaveChanges();
-                        return View("Index", "Forum", Fdb.Forums);
+                        return RedirectToAction("Index", "Forum");
                     }
                 }
                 else
